@@ -745,7 +745,6 @@ export const FakeGameSettings: UGPTSettings = {
 		preferredScoreAlg: null,
 		preferredSessionAlg: null,
 		scoreBucket: null,
-		preferredRanking: null,
 		stats: [],
 	},
 	rivals: [],
