@@ -22,7 +22,6 @@ const SetFolders = async () => {
 			preferredProfileAlg: null,
 			preferredScoreAlg: null,
 			preferredSessionAlg: null,
-			preferredRanking: null,
 			scoreBucket: null,
 			defaultTable: null,
 			stats: [
@@ -88,7 +87,6 @@ t.test("GET /api/v1/users/:userID/games/:game/:playtype/showcase", (t) => {
 				preferredProfileAlg: null,
 				preferredScoreAlg: null,
 				preferredSessionAlg: null,
-				preferredRanking: null,
 				scoreBucket: null,
 				defaultTable: null,
 				stats: [
