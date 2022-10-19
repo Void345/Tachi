@@ -36,7 +36,7 @@ export default function DropdownRow({
 				{children}
 			</tr>
 			<tr className={nested ? "nested-expandable-pseudo-row" : "expandable-pseudo-row"}>
-				<td colSpan={100}>
+				<td colSpan={100} style={{ padding: 0, borderTop: "none" }}>
 					<Collapse in={showDropdown}>
 						{renderDropdown ? (
 							<div className="tr-dropdown-container">{dropdown}</div>
