@@ -6,7 +6,8 @@ export default function DropdownRow({
 	children,
 	className,
 	dropdown,
-}: { dropdown: React.ReactNode; className?: string } & JustChildren) {
+	nested = false,
+}: { dropdown: React.ReactNode; className?: string; nested?: boolean } & JustChildren) {
 	const [showDropdown, setShowDropdown] = useState(false);
 
 	const [renderDropdown, setRenderDropdown] = useState(false);
@@ -34,7 +35,7 @@ export default function DropdownRow({
 			<tr className={className} onClick={() => setShowDropdown(!showDropdown)}>
 				{children}
 			</tr>
-			<tr className="expandable-pseudo-row">
+			<tr className={nested ? "nested-expandable-pseudo-row" : "expandable-pseudo-row"}>
 				<td colSpan={100}>
 					<Collapse in={showDropdown}>
 						{renderDropdown ? (
