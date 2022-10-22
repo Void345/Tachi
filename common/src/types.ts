@@ -1303,6 +1303,7 @@ export type IRImportTypes =
 	| "ir/direct-manual"
 	| "ir/fervidex-static"
 	| "ir/fervidex"
+	| "ir/kshook-sv6c-static"
 	| "ir/kshook-sv6c"
 	| "ir/lr2hook"
 	| "ir/usc";
@@ -1543,6 +1544,11 @@ export interface TachiAPIClientDocument {
 export interface FervidexSettingsDocument {
 	userID: integer;
 	cards: Array<string> | null;
+	forceStaticImport: boolean;
+}
+
+export interface KsHookSettingsDocument {
+	userID: integer;
 	forceStaticImport: boolean;
 }
 
