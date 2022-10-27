@@ -1,4 +1,5 @@
 import UGPTRivalsMigration from "./migrations/add-rivals-to-ugpt";
+import NullLR2HookFailedBPs from "./migrations/null-lr2hook-failed-bps";
 import RecalcBrokenIIDXNotecounts from "./migrations/recalc-broken-iidx-notecounts";
 import RemoveIIDXBeginners from "./migrations/remove-iidx-beginners";
 import RemoveMultifolderStats from "./migrations/remove-multifolder-stats";
@@ -43,7 +44,7 @@ if (Environment.nodeEnv !== "test") {
 
 	// bokutachi specific migrations
 	if (TachiConfig.TYPE !== "ktchi") {
-		// none, currently
+		REGISTERED_MIGRATIONS.push(NullLR2HookFailedBPs);
 	}
 }
 
