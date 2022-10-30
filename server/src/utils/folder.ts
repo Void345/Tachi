@@ -3,9 +3,10 @@ import db from "external/mongo/db";
 import fjsh from "fast-json-stable-hash";
 import CreateLogCtx from "lib/logger/logger";
 import { TachiConfig } from "lib/setup/config";
-import type { FilterQuery } from "mongodb";
+import type { BulkWriteOperation, FilterQuery } from "mongodb";
 import type {
 	ChartDocument,
+	FolderChartLookup,
 	FolderDocument,
 	Game,
 	Grades,
@@ -185,6 +186,28 @@ export async function CreateFolderChartLookup(folder: FolderDocument, flush = fa
 			await db["folder-chart-lookup"].remove({
 				folderID: folder.folderID,
 			});
+		}
+
+		const ops: Array<BulkWriteOperation<FolderChartLookup>> = charts.map((c) => ({
+			updateOne: {
+				filter: {
+					chartID: c.chartID,
+					folderID: folder.folderID,
+				},
+
+				// amusing no-op
+				update: {
+					$set: {
+						chartID: c.chartID,
+						folderID: folder.folderID,
+					},
+				},
+				upsert: true,
+			},
+		}));
+
+		if (ops.length === 0) {
+			return;
 		}
 
 		// we do a bulk-upsert here to avoid race conditions if multiple things try to
