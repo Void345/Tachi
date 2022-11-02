@@ -387,7 +387,10 @@ function TierlistBreakdown({ game, folderDataset, playtype, reqUser }: InfoProps
 		onSubmit: NO_OP,
 	});
 
-	const tierlistInfo = FolderDatasetToTierlistInfo(folderDataset, game, playtype, formik.values);
+	const tierlistInfo = useMemo(
+		() => FolderDatasetToTierlistInfo(folderDataset, game, playtype, formik.values),
+		[formik.values]
+	);
 
 	const dataMap = CreateChartIDMap(folderDataset);
 
@@ -492,7 +495,7 @@ function TierlistInfoLadder({
 		buckets.push(noDataBucket);
 
 		return buckets;
-	}, tierlistInfo);
+	}, [tierlistInfo]);
 
 	const gptConfig = GetGamePTConfig(game, playtype);
 
@@ -508,8 +511,8 @@ function TierlistInfoLadder({
 		<Row className="text-center">
 			{buckets
 				.filter((e) => e.length > 0)
-				.map((bucket) => (
-					<React.Fragment key={bucket[0].data!.value}>
+				.map((bucket, i) => (
+					<React.Fragment key={i}>
 						<Col className="ladder-header" xs={12}>
 							{bucket[0].data!.value} (
 							{DistinctArr(
@@ -650,6 +653,10 @@ function FolderDatasetToTierlistInfo(
 	const tierlistKeys: GPTTierlists[IDStrings][] = [];
 
 	for (const k in options) {
+		if (k === "__hideAchieved") {
+			continue;
+		}
+
 		const key = k as GPTTierlists[IDStrings];
 		if (options[key]) {
 			tierlistKeys.push(key);
