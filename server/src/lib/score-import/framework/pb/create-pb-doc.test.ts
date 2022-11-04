@@ -103,9 +103,6 @@ t.test("#CreatePBDoc", (t) => {
 					scoreData: {
 						hitMeta: {
 							bp: 5,
-							gsm: null,
-							gauge: null,
-							gaugeHistory: null,
 						},
 					},
 				}),
