@@ -198,7 +198,6 @@ export const TestingSDVXPB: PBScoreDocument<"sdvx:Single"> = {
 	rankingData: {
 		outOf: 1,
 		rank: 1,
-		rivalRank: null,
 	},
 };
 
