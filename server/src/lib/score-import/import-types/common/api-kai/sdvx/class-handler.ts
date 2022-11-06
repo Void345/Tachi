@@ -29,6 +29,10 @@ export async function CreateKaiSDVXClassHandler(
 	}
 
 	return (game, playtype, userID, ratings, logger) => {
+		logger.info(`Got return from ${baseUrl}/api/sdvx/v1/player_profile.`, {
+			json,
+		});
+
 		if (err !== undefined) {
 			logger.error(`An error occured while updating classes for ${baseUrl}.`, { err });
 			return {};
@@ -46,7 +50,9 @@ export async function CreateKaiSDVXClassHandler(
 			json.skill_level === undefined ||
 			typeof json.skill_level !== "number"
 		) {
-			logger.info(`User has no skill_level. Not updating anything.`);
+			logger.info(`User has no/invalid skill_level. Not updating anything.`, {
+				skillLevel: json.skill_level,
+			});
 			return {};
 		}
 
