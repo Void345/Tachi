@@ -1656,7 +1656,7 @@ export interface ImportTrackerOngoing extends BaseImportTracker {
 
 export interface ImportTrackerFailed extends BaseImportTracker {
 	type: "FAILED";
-	error: Error & { statusCode?: number };
+	error: { message: string; statusCode?: number };
 }
 
 /**

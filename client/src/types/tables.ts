@@ -2,6 +2,8 @@ import {
 	ChartDocument,
 	IDStrings,
 	IDStringToGame,
+	ImportDocument,
+	ImportTrackerFailed,
 	integer,
 	PBScoreDocument,
 	PublicUserDocument,
@@ -49,3 +51,26 @@ export type UGSDataset<I extends IDStrings = IDStrings> = (UserGameStats<I> & {
 		index: integer;
 	};
 })[];
+
+export type ComparePBsDataset<I extends IDStrings = IDStrings> = Array<{
+	base: PBScoreDocument<I> | null;
+	compare: PBScoreDocument<I> | null;
+	chart: ChartDocument;
+	song: SongDocument;
+}>;
+
+export type ImportDataset = Array<
+	ImportDocument & {
+		__related: {
+			user: PublicUserDocument;
+		};
+	}
+>;
+
+export type FailedImportDataset = Array<
+	ImportTrackerFailed & {
+		__related: {
+			user: PublicUserDocument;
+		};
+	}
+>;
