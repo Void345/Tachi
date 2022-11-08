@@ -129,7 +129,6 @@ export const TestingJubeatPB: PBScoreDocument<"jubeat:Single"> = {
 	rankingData: {
 		rank: 1,
 		outOf: 2,
-		rivalRank: null,
 	},
 	songID: 1,
 	game: "jubeat",
