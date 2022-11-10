@@ -2,12 +2,10 @@ import { RequestTypes, TachiServerV1Get, TachiServerV1Request } from "./fetchTac
 import { CreateLayeredLogger } from "./logger";
 import { Sleep } from "./misc";
 import { LoggerLayers } from "../data/data";
-import { ScoreDocument } from "tachi-common";
-import type { ImportDeferred, ImportPollStatus, SessionInfo, UGPTStats } from "./returnTypes";
+import type { ImportDeferred, ImportPollStatus, UGPTStats } from "./returnTypes";
 import type { CommandInteraction } from "discord.js";
 import type {
 	ChartDocument,
-	FolderDocument,
 	Game,
 	GoalDocument,
 	ImportDocument,
@@ -15,7 +13,6 @@ import type {
 	PBScoreDocument,
 	Playtype,
 	PublicUserDocument,
-	SessionDocument,
 	SongDocument,
 } from "tachi-common";
 
@@ -149,56 +146,4 @@ export async function PerformScoreImport(
 	logger.error(`Unexpected status code ${initRes.statusCode} returned from ${url}.`, { body });
 
 	throw new Error(`Unexpected status code ${initRes.statusCode} returned from ${url}.`);
-}
-
-export async function FindFolders(game: Game, playtype: Playtype, folderName: string) {
-	const res = await TachiServerV1Get<Array<FolderDocument>>(
-		`/games/${game}/${playtype}/folders`,
-		null,
-		{
-			search: folderName,
-		}
-	);
-
-	if (!res.success) {
-		throw new Error(res.description);
-	}
-
-	return res.body;
-}
-
-export async function GetChartInfo(game: Game, playtype: Playtype, chartID: string) {
-	const res = await TachiServerV1Get<{ chart: ChartDocument; song: SongDocument }>(
-		`/games/${game}/${playtype}/charts/${chartID}`,
-		null
-	);
-
-	if (!res.success) {
-		throw new Error(res.description);
-	}
-
-	return res.body;
-}
-
-export async function GetMostRecentSession(userID: integer, game: Game, playtype: Playtype) {
-	const res = await TachiServerV1Get<SessionDocument>(
-		`/users/${userID}/games/${game}/${playtype}/sessions/last`,
-		null
-	);
-
-	if (!res.success) {
-		throw new Error(res.description);
-	}
-
-	return res.body;
-}
-
-export async function GetSessionInfo(sessionID: string) {
-	const res = await TachiServerV1Get<SessionInfo>(`/sessions/${sessionID}`, null);
-
-	if (!res.success) {
-		throw new Error(res.description);
-	}
-
-	return res.body;
 }
