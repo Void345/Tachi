@@ -84,7 +84,10 @@ app.post("/webhook", bodyParser.text({ type: "*/*" }), async (req, res) => {
 
 	const event = req.header("X-GitHub-Event");
 
+	console.log(`Got hit with event ${event}.`);
+
 	if (event !== "pull_request") {
+		console.log(`Unsupported event.`);
 		return res.status(400).json({
 			success: false,
 			description: `Unsupported Event.`,
@@ -94,6 +97,7 @@ app.post("/webhook", bodyParser.text({ type: "*/*" }), async (req, res) => {
 	const body = JSON.parse(req.body as string) as EmitterWebhookEvent<"pull_request">["payload"];
 
 	if (body.action !== "opened" && body.action !== "edited") {
+		console.log(`Got body.action ${body.action}. Ignoring.`);
 		return res.status(400).json({
 			success: false,
 			description: `We only care about opened/edited pull requests!`,
@@ -103,6 +107,8 @@ app.post("/webhook", bodyParser.text({ type: "*/*" }), async (req, res) => {
 	const filesChanged = (await fetch(
 		`https://api.github.com/repos/TNG-dev/Tachi/pulls/${body.number}/files`
 	).then((r) => r.json())) as Array<{ filename: string }>;
+
+	console.log(`This PR changes ${filesChanged.map((e) => e.filename).join(", ")}.`);
 
 	// if any file modified in this pr is a collection
 	if (filesChanged.some((k) => k.filename.startsWith("database-seeds/collections"))) {
