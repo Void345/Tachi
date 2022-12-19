@@ -112,8 +112,10 @@ app.post("/webhook", bodyParser.text({ type: "*/*" }), async (req, res) => {
 
 	// if any file modified in this pr is a collection
 	if (filesChanged.some((k) => k.filename.startsWith("database-seeds/collections"))) {
+		console.log(`Firing github comment.`);
+
 		// post a link to the diff viewer in the PR comments.
-		await fetch(body.pull_request._links.comments.href, {
+		const res = await fetch(body.pull_request._links.comments.href, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -128,6 +130,14 @@ app.post("/webhook", bodyParser.text({ type: "*/*" }), async (req, res) => {
 				),
 			}),
 		});
+
+		console.log(
+			`Request to ${body.pull_request._links.comments.href} ended with ${res.status}.`
+		);
+
+		const text = await res.text();
+
+		console.log(text);
 	}
 
 	return res.status(200).json({
